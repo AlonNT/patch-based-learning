@@ -22,7 +22,7 @@ class EnvironmentArgs(ImmutableArgs):
     wandb_run_name: Optional[str] = None
 
     #: The name to give the run in wandb
-    wandb_project_name: str = 'thesis'
+    wandb_project_name: str = 'patch-based-learning'
 
     #: Debug mode means limiting the number of batches during training, etc.
     debug: bool = False
