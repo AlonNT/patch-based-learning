@@ -98,7 +98,7 @@ Notes:
 ### Table 1: Comparison between our algorithm and baselines
 - **Vanilla 1 hidden-layer CNN**  
   ```
-  python main.py --train_locally_linear_network True --replace_embedding_with_regular_conv_relu True --use_conv False --wandb_run_name "Vanilla 1 hidden-layer CNN"
+  python main.py --train_locally_linear_network True --replace_embedding_with_regular_conv_relu True --use_conv False --wandb_run_name "Table 1 - Vanilla 1 hidden-layer CNN"
   ```
 - **Phi_hard with random patches**  
   ```
@@ -234,4 +234,3 @@ The patches in use by our algorithm (the *patches dictionary*) are logged to wan
   ```
   python main.py --train_locally_linear_network True --wandb_run_name "Phi_full with clustered patches M=4194304 N=16384 k=4096 lr=0.001" --n_patches 4194304 --n_clusters 16384 --k 4096 --learning_rate 0.001
   ```
-
