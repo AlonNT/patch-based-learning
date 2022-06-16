@@ -210,7 +210,7 @@ def main():
 
     configure_logger(args.env.path)
     log_args(args)
-    wandb.init(project='thesis', name=args.env.wandb_run_name, config=args.flattened_dict())
+    wandb.init(project=args.env.wandb_project_name, name=args.env.wandb_run_name, config=args.flattened_dict())
 
     create_elbow_graphs(args)
 
