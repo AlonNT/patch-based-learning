@@ -49,25 +49,12 @@ An illustration of the semi-supervised algorithm, containing an unsupervised sta
 
 ### Creating the environment
 
-We use [conda](https://docs.conda.io/en/latest/) for creating the environments. If the creation of the environment takes too long, consider using [mamba](https://github.com/mamba-org/mamba) (which is a faster replacement for conda).
-
-Create the environment named *patch-based-learning*
-
+Create the conda environment named *patch-based-learning* and activate it
 ```shell
-conda create --name patch-based-learning python=3.9
+conda env create --file requirements.yml
+conda activate patch-based-learning
 ```
-
-Install PyTorch and torchvision.
-
-```shell
-conda install --name patch-based-learning pytorch=1.11.0 torchvision=0.12.0 -c pytorch
-```
-
-Install some useful packages for logging and visualizations.
-
-```shell
-conda install --name patch-based-learning loguru=0.6.0 wandb=0.12.18 matplotlib=3.5.2 pydantic=1.9.1 flatten-dict=0.4.2 pytorch-lightning=1.6.4 plotly=5.8.2 pandas=1.4.2 scikit-learn=1.1.1 tikzplotlib=0.10.1 -c conda-forge
-```
+If the creation of the environment takes too long, consider using [mamba](https://github.com/mamba-org/mamba) (faster replacement for conda).
 
 ### Set up wandb
 
