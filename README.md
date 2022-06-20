@@ -51,7 +51,7 @@ An illustration of the semi-supervised algorithm, containing an unsupervised sta
 
 Create the conda environment named *patch-based-learning* and activate it
 ```shell
-conda env create --file requirements.yml
+conda env create --file environment.yml
 conda activate patch-based-learning
 ```
 If the creation of the environment takes too long, consider using [mamba](https://github.com/mamba-org/mamba) (faster replacement for conda).
