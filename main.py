@@ -1,7 +1,6 @@
 import math
 import wandb
 import torch
-import faiss
 
 import numpy as np
 import torchmetrics as tm
@@ -29,7 +28,7 @@ from schemas.patches import PatchesArgs, Args
 from utils import (sample_random_patches, get_args, get_model_device, get_mlp,
                    get_dataloaders, calc_whitening_from_dataloader,
                    get_whitening_matrix_from_covariance_matrix, get_model_output_shape,
-                   get_random_initialized_conv_kernel_and_bias, calc_covariance)
+                   get_random_initialized_conv_kernel_and_bias, calc_covariance, run_kmeans_clustering)
 from vgg import get_vgg_model_kernel_size, get_vgg_blocks, configs
 
 
@@ -417,9 +416,8 @@ class PatchBasedNetwork(pl.LightningModule):
             self.whitened_patches_covariance_matrix = calc_covariance(patches)
 
         if self.args.patches.n_patches > self.args.patches.n_clusters:
-            kmeans = faiss.Kmeans(d=patches.shape[1], k=self.args.patches.n_clusters, verbose=True)
-            kmeans.train(patches)
-            patches = kmeans.centroids
+            centroids, _, _ = run_kmeans_clustering(patches, self.args.patches.n_clusters, self.args.env.use_faiss)
+            patches = centroids
 
         if self.args.patches.normalize_patches_to_unit_vectors:
             patches /= np.linalg.norm(patches, axis=1)[:, np.newaxis]

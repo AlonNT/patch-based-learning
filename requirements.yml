@@ -1,0 +1,18 @@
+name: patch-based-learning
+channels:
+  - pytorch
+  - conda-forge
+dependencies:
+  - python=3.9
+  - pytorch=1.11.0
+  - torchvision=0.12.0
+  - loguru=0.6.0
+  - wandb=0.12.18
+  - matplotlib=3.5.2
+  - pydantic=1.9.1
+  - flatten-dict=0.4.2
+  - pytorch-lightning=1.6.4
+  - plotly=5.8.2
+  - pandas=1.4.2
+  - scikit-learn=1.1.1
+  - tikzplotlib=0.10.1

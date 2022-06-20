@@ -1,7 +1,6 @@
 import os
 import torchvision
 import wandb
-import faiss
 import tikzplotlib
 
 import numpy as np
@@ -15,7 +14,7 @@ from torch.utils.data import DataLoader
 from torchvision.transforms import ToTensor, Compose, Resize
 
 from schemas.data import DataArgs
-from utils import sample_random_patches
+from utils import sample_random_patches, run_kmeans_clustering
 from main import DataModule
 from schemas.intrinsic_dimension_playground import Args
 from utils import get_args, configure_logger, log_args, calc_whitening_from_dataloader
@@ -47,7 +46,6 @@ def create_data_dict(patches: np.ndarray, whitening_matrix: np.ndarray):
         'random': random_data
     }
 
-    # faiss must receive float32 as input
     data_dict = {data_name: data.astype(np.float32) for data_name, data in data_dict.items()}
 
     return data_dict
@@ -166,9 +164,7 @@ def create_elbow_graphs(args: Args):
                           desc=f'Running k-means on {data_name} {norm_data_name} for different values of k'):
                 data = normalized_data_dict[data_name] if norm_data_name == 'normalized-data' else data_dict[data_name]
 
-                kmeans = faiss.Kmeans(patch_dim, k)
-                kmeans.train(data)
-                distances, _ = kmeans.assign(data)
+                _, _, distances = run_kmeans_clustering(data, k, args.env.use_faiss)
 
                 for norm_dist_name in norm_dist_names:
                     # If the data is already normalized, no need to divide by the norm.

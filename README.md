@@ -60,15 +60,13 @@ conda create --name patch-based-learning python=3.9
 Install PyTorch and torchvision.
 
 ```shell
-conda install --name patch-based-learning pytorch torchvision -c pytorch
+conda install --name patch-based-learning pytorch=1.11.0 torchvision=0.12.0 -c pytorch
 ```
-
-In case you want to train using CUDA on GPU, add `cudatoolkit=11.3`.
 
 Install some useful packages for logging and visualizations.
 
 ```shell
-conda install --name patch-based-learning loguru wandb matplotlib pydantic flatten-dict pytorch-lightning scipy plotly pandas scikit-learn faiss jupyterlab tikzplotlib -c conda-forge
+conda install --name patch-based-learning loguru=0.6.0 wandb=0.12.18 matplotlib=3.5.2 pydantic=1.9.1 flatten-dict=0.4.2 pytorch-lightning=1.6.4 plotly=5.8.2 pandas=1.4.2 scikit-learn=1.1.1 tikzplotlib=0.10.1 -c conda-forge
 ```
 
 ### Set up wandb

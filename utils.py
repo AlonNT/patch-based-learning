@@ -2,6 +2,7 @@ import argparse
 import math
 import os
 import sys
+import warnings
 import yaml
 import torch
 import torchvision
@@ -18,7 +19,7 @@ from typing import List, Optional, Callable, Tuple
 from loguru import logger
 from torch.utils.data import DataLoader
 
-from consts import LOGGER_FORMAT, N_CLASSES
+from consts import LOGGER_FORMAT
 
 
 def log_args(args):
@@ -561,3 +562,44 @@ def get_random_initialized_conv_kernel_and_bias(in_channels: int,
     kernel = tmp_conv.weight.data.cpu().numpy().copy()
     bias = tmp_conv.bias.data.cpu().numpy().copy()
     return kernel, bias
+
+
+def run_kmeans_clustering(data: np.ndarray, k: int, try_to_use_faiss: bool):
+    """Runs k-means clustering on the given data. Returns the centroids, the assignments of data-points to centroids,
+    and the distances between each data-point to its assigned centroid.
+
+    Args:
+        data: ndarray of shape (n_samples, n_features)
+            The data to cluster.
+        k: int
+            The number of clusters to form as well as the number of centroids to generate.
+        try_to_use_faiss: boolean, default=False
+            Whether to use faiss library for faster run-time (requires faiss library installed).
+
+    Returns:
+        centroids: ndarray of shape (n_clusters, n_features)
+            The clusters centers.
+        indices: ndarray of shape (n_samples,)
+            Labels of each point (i.e., the index of the closest centroid).
+        distances: ndarray of shape (n_samples,)
+            The distance of each data-point to its closest centroid.
+    """
+    if try_to_use_faiss:
+        try:
+            from faiss import Kmeans as KMeans
+            kmeans = KMeans(d=data.shape[1], k=k)
+            kmeans.train(data)
+            centroids = kmeans.centroids
+            distances, indices = kmeans.assign(data)
+            return centroids, distances, indices
+        except ImportError:
+            warnings.warn(f'use_faiss is True, but failed to import faiss. Using sklearn instead.')
+            from sklearn.cluster import KMeans
+
+    from sklearn.cluster import KMeans
+    kmeans = KMeans(n_clusters=k)
+    distances_to_each_centroid = kmeans.fit_transform(data)
+    indices = kmeans.labels_
+    distances = np.take_along_axis(distances_to_each_centroid, indices[:, np.newaxis], axis=1).squeeze(axis=1)
+    centroids = kmeans.cluster_centers_
+    return centroids, indices, distances

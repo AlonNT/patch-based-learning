@@ -30,6 +30,9 @@ class EnvironmentArgs(ImmutableArgs):
     #: Debug mode means limiting the number of batches during training, etc.
     multi_gpu: Union[NonNegativeInt, List[NonNegativeInt]] = 0
 
+    #: Whether to use faiss for running k-means clustering (much faster than sklearn).
+    use_faiss: bool = False
+
     @validator('path', pre=True)
     def create_parent_out_dir_if_not_exists(cls, v: str):
         if not Path(v).exists():
