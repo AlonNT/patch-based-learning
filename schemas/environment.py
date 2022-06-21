@@ -31,7 +31,7 @@ class EnvironmentArgs(ImmutableArgs):
     multi_gpu: Union[NonNegativeInt, List[NonNegativeInt]] = 0
 
     #: Whether to use faiss for running k-means clustering (much faster than sklearn).
-    use_faiss: bool = False
+    use_faiss: bool = True
 
     @validator('path', pre=True)
     def create_parent_out_dir_if_not_exists(cls, v: str):

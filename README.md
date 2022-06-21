@@ -49,12 +49,23 @@ An illustration of the semi-supervised algorithm, containing an unsupervised sta
 
 ### Creating the environment
 
-Create the conda environment named *patch-based-learning* and activate it
+Create the conda environment named *patch-based-learning* and activate it:
 ```shell
 conda env create --file environment.yml
 conda activate patch-based-learning
 ```
-If the creation of the environment takes too long, consider using [mamba](https://github.com/mamba-org/mamba) (faster replacement for conda).
+Notes:
+- It's recommended to install [faiss](https://github.com/facebookresearch/faiss) as well, 
+  to enable running k-means faster (can take a couple of minutes with faiss, instead of almost 1 hour with sklearn).  
+  Run 
+  ```shell
+  conda install -c pytorch faiss-cpu=1.7.2
+  ```
+  and the code will recognize the environment has faiss and use it instead of sklearn.
+  - It's not by default in the environment.yml file because faiss is not always available in conda 
+  (for example for mac os with m1 chip, as of June 2022).
+- If the creation of the environment takes too long, consider using [mamba](https://github.com/mamba-org/mamba) 
+instead of conda.
 
 ### Set up wandb
 
